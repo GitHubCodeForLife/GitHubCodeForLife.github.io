@@ -11,67 +11,227 @@
     <!-- <link rel="stylesheet" href="https://bootswatch.com/5/sketchy/bootstrap.min.css"> -->
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
         #oke {
             position: absolute;
-            background-color: #abc;
-            left: 50px;
+            left: 500px;
+            top: 500px;
             width: 200px;
             height: 90px;
             margin: 5px;
+        }
+
+        #id2 {
+            position: absolute;
+            top: 500px;
+            left: 800px;
+            width: 200px;
+            height: 90px;
+            margin: 5px;
+        }
+
+        body {
+            background-image: url('./bg.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+
+        .modal-content {
+            background-size: cover;
+            background-image: url('./bg1.jpg');
+            color: black;
         }
     </style>
 </head>
 
 <body>
-    <h1>Hello </h1>
-    <!-- Trigger the modal with a button -->
-    <button type="button" onmouseenter="mouseEnter()" id="oke" class="btn btn-secondary" data-bs-toggle="tooltip"
-        data-bs-placement="left" title="Tooltip on left">Đố m click được nút này</button>
 
+    <!-- Modal -->
+    <div id="myModal2" class="modal fade " role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title text-center ">Em à mình a có điều này muốn nói</h1>
+                </div>
+                <div class="modal-body text-center">
+                    <div style="visibility: hidden;">
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                    </div>
+                    <h3 class="text-light">Em có tò mò không này, nếu em muốn nghe tiếp thì hãy nhớ bấm vào tiếp tục
+                        nhá
+                    </h3>
+
+                    <div style="visibility: hidden;">
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                    </div>
+                    <div style="visibility: hidden;">
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                        <div>.</div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Có ạ</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div style="visibility: hidden;">
+        <div>.</div>
+        <div>.</div>
+        <div>.</div>
+        <div>.</div>
+        <div>.</div>
+        <div>.</div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <h1 class="animate__animated animate__bounce text-center">Em đồng ý làm người yêu a nhá ❤</h1>
+    </div>
+    <!-- Trigger the modal with a button -->
+    <button type="button" onmouseenter="mouseEnter()" onclick="Click()" id="oke" class="btn btn-danger"
+        data-bs-toggle=" tooltip" data-bs-placement="left" title="Tooltip on left">Mơ đi nhá 😜😜😜😝😝😝 </button>
+    <button type="button" id="id2" class="btn btn-success" data-toggle="modal" data-target="#myModal">Thật ra em
+        <div> thích a lâu rồi đó 😅😅😅😅 </div>
+    </button>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Thật ra a biết lâu rồi nhá</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Em hãy cho a biết lý do là gì nè</p>
+                    <input type="text">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal"
+                        data-target="#myModal1">Gửi cho a nhá</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="myModal1" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="background-image: url('./bg2.jpg');">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title">Vậy còn chần chờ gì nữa</h1>
+                </div>
+                <div class="modal-body">
+                    <h3>A đang đợi e đó nha, ib a nhá
+                    </h3>
+                </div>
+                <div class="modal-footer text-center">
+                    <a href="https://www.facebook.com/changemylifek/">
+                        <h3>Yêu anh</h3>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <script>
-        let button_oke = document.getElementById("oke");
+        $("#myModal2").modal()
+        let time = 0;
+        let button_oke = $('#oke');
+        let button_r = $('#id2');
         // console.log(button_oke);
         function mouseEnter() {
+            if (time > 5)
+                return;
             console.log("hello");
             //Get position 
-            var position = getPosition(button_oke);
+            var position_old = getPosition(button_oke);
+            // console.log(position_old);
             //Find position 
-            var position_new = findPosition(position);
-            console.log(position_new);
+            var position_new = findPosition();
+            // console.log(position_new);
             //Move 
-            move(position_new, position);
+            moveButtonTo(button_oke, position_new, position_old);
+            time++;
         };
         function getPosition(button) {
-            // console.log(button);
-            return { top: button.offsetTop, left: button.offsetLeft }
+            // console.log(button[0]);
+            return { top: button[0].offsetTop, left: button[0].offsetLeft }
         }
 
-        function findPosition(position) {
-            var width = Math.random() * screen.width / 2;
-            var height = Math.random() * screen.height / 2;
+        function findPosition() {
+            var left = Math.random() * (screen.width - 300);
+            var top = Math.random() * (screen.height - 300);
 
-            return { left: width, right: width };
+            return { top: top, left: left };
         }
 
-        function move(position_new, position) {
-            if (position_new.left + position.left > screen.width) {
-                $('#oke').animate({ left: -position_new.left }, "fast");
+        function moveButtonTo(button, position_new, position_old) {
+            console.log("move Button");
+            console.log(button[0]);
+            console.log(position_old);
+            console.log(position_new);
+            var p;
+            if (position_new.top > position_old.top) {
+                var temp = position_new.top - position_old.top;
+                button.animate({ "top": "+=" + temp + "px" }, "fast");
             } else {
-                $('#oke').animate({ left: +position_new.left }, "fast");
+                var temp = -(position_new.top - position_old.top);
+                button.animate({ "top": "-=" + temp + "px" }, "fast");
+            }
+            if (position_new.left > position_old.left) {
+                var temp = position_new.left - position_old.left;
+                button.animate({ "left": "+=" + temp + "px" }, "fast");
+            } else {
+                var temp = -(position_new.left - position_old.left);
+                button.animate({ "left": "-=" + temp + "px" }, "fast");
             }
 
-            if (position_new.right + position.top > screen.height) {
-                $('#oke').animate({ top: -position_new.right }, "fast");
-            } else {
-                $('#oke').animate({ top: +position_new.right }, "fast");
+        }
+
+        function Click() {
+
+            var p1 = getPosition(button_oke);
+            var p2 = getPosition(button_r);
+            if (time == 7) {
+                button_oke.remove();
+                moveButtonTo(button_r, p1, p2);
+
+                // button_oke[0].setAttribute("display", "none");
+                return;
             }
+            moveButtonTo(button_oke, p2, p1);
+            moveButtonTo(button_r, p1, p2);
+            time++;
 
         }
     </script>
+
 </body>
 
 </html>
