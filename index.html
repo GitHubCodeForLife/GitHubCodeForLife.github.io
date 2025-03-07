@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My CV Online</title>
+    <title>TranTu CV Online</title>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script src="./tailwind.js"></script>
     <style>
@@ -96,10 +96,12 @@
     </div>
 
     <div class="grid col-span-1 md:flex items-center mt-10 justify-center reveal">
-        <div class="mr-14">
+        <!-- <div class="mr-14">
             <img class="md:w-40" src="https://img.freepik.com/free-vector/quill-pen-logo-template_23-2149852429.jpg?semt=ais_hybrid" alt="Logo">
+        </div> -->
+        <div class="mr-14 ">
+            <img class="md:w-40 rounded-full" src="./avatar.jpg" alt="Logo">
         </div>
-    
         <div class="md:border-l-2 pl-4 p-2 col-span-2 text-justify md:w-1/2 mt-10 md:mt-0">
             <p>
                 As a highly skilled Full-Stack Developer with over 3 years of experience,
@@ -117,34 +119,73 @@
             </p>
         </div>
     </div>
-
-    <div class="grid col-span-1 md:flex items-center justify-center mt-20">
-        <div class="reveal">
-            <div class="md:flex items-center mb-4">
-                <div class="flex items-center md:mr-8 mb-4 md:mb-0">
-                    <i class="fas fa-envelope-open-text fa-2x mr-2"></i>
-                    <p>tranvantu7597@gmail.com</p>
+    <!-- section about me -->
+    <div class="flex items-center justify-center ">
+        <div class="max-w-4xl mx-auto bg-white rounded-2xl p-6">
+            <!-- <h1 class="text-2xl font-bold text-center text-gray-800 reveal">Trần Văn Tú</h1> -->
+            <!-- <p class="text-center text-gray-600 reveal">Ho Chi Minh City, Vietnam</p> -->
+            
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 reveal">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-700">Personal Information</h2>
+                    <p><strong>Name:</strong> Tran Van Tu</p>
+                    <p><strong>Address:</strong> Ho Chi Minh City, Vietnam</p>
+                    <p><strong>Birthday:</strong> 21/10/2000</p>
+                    <p><strong>Hobbies:</strong> I love playing badminton, sing and sure coding. </p>
+                    <p><strong>Marital Status:</strong> Single</p>
+                    <p><strong>Degree:</strong> Univesity Of Science (2018 - 2022) </p>
                 </div>
-
-                <div class="flex items-center">
-                    <i class="fab fa-github fa-2x mr-2"></i>
-                    <p><b>github.com/</b>GitHubCodeForLife</p>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-700">Career Objective</h2>
+                    <ul class="list-disc list-inside mt-2 text-gray-600">
+                        <li>Make a production about my daily routine.</li>
+                        <li>Improve by writing clean, high-performance code.</li>
+                        <li>Always learning new technology.</li>
+                    </ul>
                 </div>
             </div>
-
-            <div class="md:flex items-center">
-                <div class="flex items-center md:mr-7">
-                    <i class="fas fa-phone-alt fa-2x mr-2 mb-4 md:mb-0"></i>
-                    <p>+84961050667</p>
-                </div>
-
-                <div class="flex items-center">
-                    <i class="fab fa-linkedin fa-2x mr-2"></i>
-                    <p><b>linkedin.com/</b>/in/tran-tu-0551b6215/</p>
+            <div class="button-download-cv text-center mt-4">
+                <a href="./TranVanTu.pdf" download="TranVanTu.pdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Download CV</a>
+            </div>
+            <div class="grid col-span-1 md:flex items-center justify-center mt-20">
+                <div class="reveal">
+                    <div class="md:flex items-center mb-4">
+                        <div class="flex items-center md:mr-8 mb-4 md:mb-0">
+                            <i class="fas fa-envelope-open-text fa-2x mr-2"></i>
+                            <a href="mailto:tranvantu7597@gmail.com">
+                                <p>tranvantu7597@gmail.com</p>
+                            </a>
+                        </div>
+        
+                        <div class="flex items-center">
+                            <i class="fab fa-github fa-2x mr-2"></i>
+                            <a href="https://github.com/GitHubCodeForLife" target="_blank">
+                                <p><b>github.com/</b>GitHubCodeForLife</p>
+                            </a>
+                        </div>
+                    </div>
+        
+                    <div class="md:flex items-center">
+                        <div class="flex items-center md:mr-7">
+                            <i class="fas fa-phone-alt fa-2x mr-2 mb-4 md:mb-0"></i>
+                            <a href="tel:+84961050667">
+                                <p>+84961050667</p>
+                            </a>
+                        </div>
+        
+                        <div class="flex items-center">
+                            <i class="fab fa-linkedin fa-2x mr-2"></i>
+                            <a href="https://www.linkedin.com/in/tran-tu-0551b6215/" target="_blank">
+                                <p><b>linkedin.com/</b>/in/tran-tu-0551b6215/</p>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+   
 
     <div class="md:flex mt-20 text-center ml-10 mr-10 md:ml-36 md:mr-36">
         <div class="md:mr-20 md:w-1/3"> 
@@ -320,17 +361,18 @@
 
 
         <div class="md:w-2/3 reveal">
-            <h1 class="font-bold italic mb-10 reveal">PROJECTS</h1>
+            <h1 class="font-bold italic mb-10 reveal">WORK EXPERIENCES</h1>
 
             <div class="relative mt-5 text-left">
                 
+                <!-- BPM system -->
                 <div class="flex items-center relative reveal">
                     <div class="hidden md:block w-20">
-                        <div class="font-bold italic">2020</div>
-                        <div class="md:flex space-x-1 text-xs">
-                            <div>Abr.</div>
-                            <div>-</div>
-                            <div>Jun.</div>
+                        <div class="font-bold italic">Chubb Life </div>
+                        <div class="space-x-1 text-xs italic ">
+                            <div>03/2023</div>
+                            <div>---</div>
+                            <div>Present</div>
                         </div>                        
                     </div>
                     
@@ -339,26 +381,32 @@
                     </div>
 
                     <div class="ml-10">
-                        <div class="font-bold">Proyecto 1</div>
-                        <div class="italic md:mb-4">Empresa 1</div>
+                        <div class="font-bold">BPM System</div>
+                        <div class="italic md:mb-4">Technologies: Java Spring boot, Camunda engine, Oracle DB, Hibernate, Azure AAD.</div>
                         <div class="mb-4 mt-2 md:hidden">
-                            <div class="font-bold">2020</div>
-                            <div class="text-xs">Abril - Junio</div>
+                            <div class="font-bold">2023</div>
+                            <div class="text-xs">03/2023 - Present</div>
                         </div>
-                        <div class="mb-10">Fusce auctor gravida dui, ut tristique nisi aliquam quis. Maecenas id ligula ac dui mollis tempor. Sed vitae ex eros. Proin nisl felis, consectetur sed elit sed, vestibulum ultrices nibh.</div>
+                        <div class="mb-10">
+                            A System uses Camunda engine to create process flows to allow other department purchase, create payment voucher, as well as cost management.
+                            <!-- li tailwind -->
+                            <ul class="list-disc list-inside">
+                                <li>Coding new features and maintain.</li>
+                                <li>Design and develop database.</li>
+                                <li>Apply AAD for single sign on security.</li>
+                            </ul>
+                        </div>     
                     </div>
                 </div>
 
-
-
-                
+                <!-- AIS project -->
                 <div class="flex items-center relative reveal">
                     <div class="hidden md:block w-20">
-                        <div class="font-bold italic">2020</div>
-                        <div class="md:flex space-x-1 text-xs">
-                            <div>Jul.</div>
-                            <div>-</div>
-                            <div>Ago.</div>
+                        <div class="font-bold italic">Chubb Life</div>
+                        <div class="space-x-1 text-xs italic ">
+                            <div>03/2023</div>
+                            <div>---</div>
+                            <div>Present</div>
                         </div>                        
                     </div>
                     
@@ -367,42 +415,117 @@
                     </div>
 
                     <div class="ml-10">
-                        <div class="font-bold">Proyecto 2</div>
-                        <div class="italic md:mb-4">Empresa 2</div>
+                        <div class="font-bold">AIS PROJECT</div>
+                        <div class="italic md:mb-4">Techonoligies: Java Spring boot, Angular, Survey JS, Hibernate.</div>
                         <div class="mb-4 mt-2 md:hidden">
-                            <div class="font-bold">2020</div>
-                            <div class="text-xs">Julio - Agosto</div>
+                            <div class="font-bold">2023</div>
+                            <div class="text-xs">03/2023 - Present</div>
                         </div>
-                        <div class="mb-10">Fusce auctor gravida dui, ut tristique nisi aliquam quis. Maecenas id ligula ac dui mollis tempor. Sed vitae ex eros. Proin nisl felis, consectetur sed elit sed, vestibulum ultrices nibh.</div>
+                        <div class="mb-10">
+                            A System that supports agencies in their work. There are a lot of modules which 
+                            agencies daily use like eContract, eLearning, eLetter…
+                            <ul class="list-disc list-inside">
+                                <li>Develop and maintain module gift promotion, a system exchange gift betweena lot of locations..</li>
+                                <li>Develop and maintain a lot of modules that support agencies such as
+                                    eLearning, eContract, push notifications....</li>
+                            </ul>
+                        </div>     
+                    </div>
+                </div>
+                
+                <!-- Smart Agency -->
+                <div class="flex items-center relative reveal">
+                    <div class="hidden md:block w-20">
+                        <div class="font-bold italic">Chubb Life</div>
+                        <div class="space-x-1 text-xs italic ">
+                            <div>03/2023</div>
+                            <div>---</div>
+                            <div>Present</div>
+                        </div>                        
+                    </div>
+                    
+                    <div class="border-r-2 border-black absolute h-full left-1 md:left-20 top-2 z-10">
+                        <i class="fas fa-circle -top-1 -ml-2 absolute"></i>
+                    </div>
+
+                    <div class="ml-10">
+                        <div class="font-bold">Smart Agency</div>
+                        <div class="italic md:mb-4">Techonoligies: Spring Boot, Angular</div>
+                        <div class="mb-4 mt-2 md:hidden">
+                            <div class="font-bold">2023</div>
+                            <div class="text-xs">03/2023 - Present</div>
+                        </div>
+                        <div class="mb-10">
+                            With mobile technology, users can easily take advantage of apps, they can get the 
+                            news from company daily, follow marketing activities, using eRecruitment, eApplication, eReciept… in more convenient ways.
+                            <ul class="list-disc list-inside">
+                                <li>Develop and maintain new features.</li>
+                                <li>Collaborate with outsource teams, to develop UI and Gateway.</li>
+                                <li>Contact other departments to support users.</li>
+                            </ul>
+                        </div>     
+                    </div>
+                </div>
+                
+                <!-- Core Ebao -->
+                <div class="flex items-center relative reveal">
+                    <div class="hidden md:block w-20">
+                        <div class="font-bold italic">Chubb Life</div>
+                        <div class="space-x-1 text-xs italic ">
+                            <div>03/2024</div>
+                            <div>---</div>
+                            <div>03/2025</div>
+                        </div>                        
+                    </div>
+                    
+                    <div class="border-r-2 border-black absolute h-full left-1 md:left-20 top-2 z-10">
+                        <i class="fas fa-circle -top-1 -ml-2 absolute"></i>
+                    </div>
+
+                    <div class="ml-10">
+                        <div class="font-bold">Core Ebao</div>
+                        <div class="italic md:mb-4">Techonoligies: Servlet, JavaScript, Java, OracleDB</div>
+                        <div class="mb-4 mt-2 md:hidden">
+                            <div class="font-bold">2024</div>
+                            <div class="text-xs">03/2024 - 03/2025</div>
+                        </div>
+                        <div class="mb-10">
+                            Ebao is a core legacy system for insurance systems. 
+                            I join the project to develop newinsurance product and maintain old features.
+                            <ul class="list-disc list-inside">
+                                <li>Maintain and enhance new features for ebao</li>
+                                <li>Develop new insurance product (EPUL): joining to BBQ, FNA, NBUW, Contract Product Management procceses</li>
+                            </ul>
+                        </div>     
                     </div>
                 </div>
 
-
-
-                
+                <!-- Hitachi Vantara -->
                 <div class="flex items-center relative reveal">
                     <div class="hidden md:block w-20">
-                        <div class="font-bold italic">2020</div>
-                        <div class="md:flex space-x-1 text-xs">
-                            <div>Ago.</div>
-                            <div>-</div>
-                            <div>Hoy.</div>
+                        <div class="font-bold italic">Hitachi Vantara</div>
+                        <div class="space-x-1 text-xs italic ">
+                            <div>03/2022</div>
+                            <div>---</div>
+                            <div>03/2023</div>
                         </div>                        
                     </div>
                     
                     <div class="border-r-2 border-black absolute h-full left-1 md:left-20 top-2 z-10">
                         <i class="fas fa-circle -top-1 -ml-2 absolute"></i>
-                        <i class="fas fa-circle bottom-0 -ml-2 absolute"></i>
                     </div>
 
                     <div class="ml-10">
-                        <div class="font-bold">Proyecto 3</div>
-                        <div class="italic md:mb-4">Empresa 3</div>
+                        <div class="font-bold">Projects At Hitachi Vantara</div>
+                        <div class="italic md:mb-4">Techonoligies: Spring boot (Java), Angular, Postgres (database), and AWS cloud, ReactJS</div>
                         <div class="mb-4 mt-2 md:hidden">
-                            <div class="font-bold">2020</div>
-                            <div class="text-xs">Agosto - Hoy</div>
+                            <div class="font-bold">2022</div>
+                            <div class="text-xs">03/2022 - 03/2023</div>
                         </div>
-                        <div class="mb-10">Fusce auctor gravida dui, ut tristique nisi aliquam quis. Maecenas id ligula ac dui mollis tempor. Sed vitae ex eros. Proin nisl felis, consectetur sed elit sed, vestibulum ultrices nibh.</div>
+                        <div class="mb-10">
+                            Hitachi Vantara is the outsourcing company, that is the first company I joined. Byjoining the projects with customers from American and collaborating with Indian
+                            engineering, I gained the knowledge about software lifecycle, agile methodology, spring boot technologies, AWS cloud.
+                        </div>     
                     </div>
                 </div>
 
@@ -410,6 +533,11 @@
             </div>
         </div>
     </div>
+
+    <!-- footer -->
+    <footer class="mt-6 w-full bg-gray-800 text-white text-center py-4">
+        <p>&copy; 2025 Trần Văn Tú. All Rights Reserved.</p>
+    </footer>   
 </div>
 <script src="./scroll.js"></script>      
 
