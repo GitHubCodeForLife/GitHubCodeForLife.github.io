@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="1000" height="1000"></canvas>
+
+    <script>
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const DrawUtil = {
+            drawPoint(x, y, color, label) {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = "black";
+                ctx.font = "16px Arial";
+                ctx.fillText(label, x + 10, y - 10);
+            },
+            drawLine(x1, y1, x2, y2, color) {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+        }
+
+        const treeBinaryPreOrder = "ADEBJCFHIG";
+        const treeBinaryPostOrder = "EJBDHIFGCA";
+
+        //draw binary tree
+        const rootX = 600;
+        const rootY = 100;
+        const distance = 100;
+        const rootIndex = {
+                x: rootX,
+                y: rootY,
+                label: "A"
+        }
+
+        DrawUtil.drawPoint(rootIndex.x, rootIndex.y, "red", rootIndex.label);
+
+        const drawBinaryTree = (preOrder, postOrder, rootPoint ) => {
+            const root = preOrder[0];
+            const left = preOrder.slice(1, preOrder.indexOf(postOrder[postOrder.length - 2]) + 2);
+            const right = preOrder.slice(preOrder.indexOf(postOrder[postOrder.length - 2]) + 2, preOrder.length);
+
+            const leftPostOrder = postOrder.slice(0, postOrder.indexOf(left[left.length - 1]) + 1);
+            const rightPostOrder = postOrder.slice(postOrder.indexOf(left[left.length - 1]) + 1, postOrder.length - 1);
+
+            const leftRoot = left[left.length - 1];
+            const rightRoot = right[right.length - 1];
+
+            const leftPoint = {
+                x: rootPoint.x - distance,
+                y: rootPoint.y + distance,
+                label: leftRoot
+            }
+
+            const rightPoint = {
+                x: rootPoint.x + distance,
+                y: rootPoint.y + distance,
+                label: rightRoot
+            }
+
+            DrawUtil.drawPoint(leftPoint.x, leftPoint.y, "red", leftPoint.label);
+            DrawUtil.drawPoint(rightPoint.x, rightPoint.y, "red", rightPoint.label);
+
+            DrawUtil.drawLine(rootPoint.x, rootPoint.y, leftPoint.x, leftPoint.y, "blue");
+            DrawUtil.drawLine(rootPoint.x, rootPoint.y, rightPoint.x, rightPoint.y, "blue");
+
+            if (left.length > 1) {
+                drawBinaryTree(left, leftPostOrder, leftPoint);
+            }
+
+            if (right.length > 1) {
+                drawBinaryTree(right, rightPostOrder, rightPoint);
+            }
+
+        }
+
+       
+
+        drawBinaryTree(treeBinaryPreOrder, treeBinaryPostOrder, rootIndex);
+
+    </script>    
+</body>
+</html>
