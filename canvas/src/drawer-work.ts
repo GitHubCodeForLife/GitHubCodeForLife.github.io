@@ -1,6 +1,9 @@
 import { Point } from "./point";
 
 export class DrawCanvasWorker{
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    }
     ctx: CanvasRenderingContext2D;
 
     constructor(ctx : CanvasRenderingContext2D){
