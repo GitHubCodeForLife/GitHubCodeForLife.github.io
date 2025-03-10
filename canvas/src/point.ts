@@ -1,5 +1,5 @@
 export interface Point {
     x: number;
     y: number;
-    label: string;
+    label?: string;
 }

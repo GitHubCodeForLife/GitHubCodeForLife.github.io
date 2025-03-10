@@ -1,49 +1,50 @@
-import { Point } from "./point";
-import { DrawCanvasWorker } from "./drawer-work";
 import '../styles/index.scss';
+import * as perfectFreehand from "perfect-freehand";
 
-const canvas: HTMLCanvasElement = document.getElementById("myCanvas") as HTMLCanvasElement;
+const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-const inputMatrix = document.getElementById("matrix") as HTMLInputElement;
-const buttonDraw = document.getElementById("draw") as HTMLButtonElement;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-const drawWorker = new DrawCanvasWorker(ctx);
+let isDrawing = false;
+let points: any[] = [];
 
-inputMatrix.value = JSON.stringify([
-    [0, 1, 1, 0],
-    [1, 0, 1, 1],
-    [1, 1, 0, 1],
-    [0, 1, 1, 0]
-]);
-
-buttonDraw.addEventListener("click", () => {
-    const matrix = JSON.parse(inputMatrix.value);
-    drawWorker.clearCanvas();
-    drawMatrix(matrix);
-});
-
-function drawMatrix(matrix: number[][]) {
-    const points: Point[] = [];
-    for (let i = 0; i < matrix.length; i++) {
-        points.push({
-            x: Math.random() * 600 + 50,
-            y: Math.random() * 600 + 50,
-            label: String.fromCharCode(65 + i)
-        });
-    }
-
-    points.forEach((point, index) => {
-        drawWorker.drawPoint(point, "red", point.label);
-    });
-
-    for (let i = 0; i < matrix.length; i++) {
-        for (let j = i; j < matrix[i].length; j++) {
-            if (matrix[i][j] === 1) {
-                drawWorker.drawLine(points[i], points[j], "blue");
-            }
-        }
-    }
+function getStrokeOptions() {
+    return { size: 4, thinning: 0.7, smoothing: 0.5, streamline: 0.5 };
 }
 
+function drawStroke() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const stroke = perfectFreehand.getStroke(points, getStrokeOptions());
 
+    ctx.beginPath();
+    if (stroke.length > 0) {
+        ctx.moveTo(stroke[0][0], stroke[0][1]);
+        stroke.forEach(([x, y]) => ctx.lineTo(x, y));
+    }
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+}
+
+canvas.addEventListener("pointerdown", (e) => {
+    isDrawing = true;
+    points = [[e.clientX, e.clientY, e.pressure || 0.5]];
+});
+
+canvas.addEventListener("pointermove", (e) => {
+    if (!isDrawing) return;
+    points.push([e.clientX, e.clientY, e.pressure || 0.5]);
+    drawStroke();
+});
+
+canvas.addEventListener("pointerup", () => {
+    isDrawing = false;
+    points = [];
+});
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
