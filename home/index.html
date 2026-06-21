@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Kiểm Tra Nhà Trước Khi Mua</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #f5f7fa;
+    }
+
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+    }
+
+    .section {
+        background: white;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #3498db;
+        margin-top: 0;
+    }
+
+    label {
+        display: block;
+        margin: 8px 0;
+        cursor: pointer;
+    }
+
+    .progress-container {
+        background: #ddd;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .progress-bar {
+        height: 25px;
+        width: 0%;
+        background: #27ae60;
+        color: white;
+        text-align: center;
+        line-height: 25px;
+        transition: 0.3s;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    button {
+        padding: 12px 18px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 10px;
+        margin-right: 10px;
+        font-size: 15px;
+    }
+
+    .export-btn {
+        background: #3498db;
+        color: white;
+    }
+
+    .reset-btn {
+        background: #e74c3c;
+        color: white;
+    }
+</style>
+</head>
+<body>
+
+<h1>🏠 Checklist Mua Nhà</h1>
+
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar">0%</div>
+</div>
+
+<div class="section">
+    <h2>1. Pháp lý</h2>
+    <label><input type="checkbox" class="check"> Có sổ hồng/sổ đỏ hợp lệ</label>
+    <label><input type="checkbox" class="check"> Chủ sở hữu đúng người bán</label>
+    <label><input type="checkbox" class="check"> Không tranh chấp</label>
+    <label><input type="checkbox" class="check"> Không thế chấp</label>
+    <label><input type="checkbox" class="check"> Không nằm trong quy hoạch bất lợi</label>
+</div>
+
+<div class="section">
+    <h2>2. Vị trí & Môi trường</h2>
+    <label><input type="checkbox" class="check"> Gần nơi làm việc</label>
+    <label><input type="checkbox" class="check"> Gần trường học/chợ/bệnh viện</label>
+    <label><input type="checkbox" class="check"> Không ngập nước</label>
+    <label><input type="checkbox" class="check"> Giao thông thuận tiện</label>
+    <label><input type="checkbox" class="check"> Khu vực an ninh tốt</label>
+</div>
+
+<div class="section">
+    <h2>3. Hướng nhà & Ánh sáng</h2>
+    <label><input type="checkbox" class="check"> Thông thoáng</label>
+    <label><input type="checkbox" class="check"> Đủ ánh sáng tự nhiên</label>
+    <label><input type="checkbox" class="check"> Không bị che chắn quá nhiều</label>
+</div>
+
+<div class="section">
+    <h2>4. Kết cấu công trình</h2>
+    <label><input type="checkbox" class="check"> Không nứt tường lớn</label>
+    <label><input type="checkbox" class="check"> Không dột mái</label>
+    <label><input type="checkbox" class="check"> Không lún nền</label>
+    <label><input type="checkbox" class="check"> Cửa hoạt động tốt</label>
+    <label><input type="checkbox" class="check"> Cầu thang chắc chắn</label>
+</div>
+
+<div class="section">
+    <h2>5. Điện & Nước</h2>
+    <label><input type="checkbox" class="check"> Áp lực nước tốt</label>
+    <label><input type="checkbox" class="check"> Không rò rỉ nước</label>
+    <label><input type="checkbox" class="check"> Hệ thống điện an toàn</label>
+</div>
+
+<div class="section">
+    <h2>6. Thấm dột & Côn trùng</h2>
+    <label><input type="checkbox" class="check"> Không ẩm mốc</label>
+    <label><input type="checkbox" class="check"> Không thấm tường</label>
+    <label><input type="checkbox" class="check"> Không mối mọt</label>
+</div>
+
+<div class="section">
+    <h2>7. Hạ tầng</h2>
+    <label><input type="checkbox" class="check"> Đường rộng</label>
+    <label><input type="checkbox" class="check"> Ô tô vào được</label>
+    <label><input type="checkbox" class="check"> Thoát nước tốt</label>
+    <label><input type="checkbox" class="check"> Internet ổn định</label>
+</div>
+
+<div class="section">
+    <h2>8. Chi phí</h2>
+    <label><input type="checkbox" class="check"> Thuế phí rõ ràng</label>
+    <label><input type="checkbox" class="check"> Chi phí sửa chữa hợp lý</label>
+    <label><input type="checkbox" class="check"> Giá phù hợp khu vực</label>
+</div>
+
+<div class="section">
+    <h2>📝 Ghi chú</h2>
+    <textarea id="notes" placeholder="Ghi chú khi đi xem nhà..."></textarea>
+</div>
+
+<button class="export-btn" onclick="exportChecklist()">
+Xuất báo cáo
+</button>
+
+<button class="reset-btn" onclick="resetChecklist()">
+Xóa dữ liệu
+</button>
+
+<script>
+const checks = document.querySelectorAll('.check');
+const notes = document.getElementById('notes');
+
+function updateProgress() {
+    const total = checks.length;
+    const checked = [...checks].filter(c => c.checked).length;
+    const percent = Math.round((checked / total) * 100);
+
+    const bar = document.getElementById('progressBar');
+    bar.style.width = percent + '%';
+    bar.textContent = percent + '%';
+
+    saveData();
+}
+
+function saveData() {
+    const data = [...checks].map(c => c.checked);
+    localStorage.setItem('houseChecklist', JSON.stringify(data));
+    localStorage.setItem('houseNotes', notes.value);
+}
+
+function loadData() {
+    const data = JSON.parse(localStorage.getItem('houseChecklist'));
+    if (data) {
+        checks.forEach((c, i) => c.checked = data[i]);
+    }
+
+    notes.value = localStorage.getItem('houseNotes') || '';
+    updateProgress();
+}
+
+function exportChecklist() {
+    let text = "BÁO CÁO KIỂM TRA NHÀ\n\n";
+
+    checks.forEach((c, index) => {
+        const label = c.parentElement.innerText;
+        text += `${c.checked ? "✔" : "✘"} ${label}\n`;
+    });
+
+    text += "\nGHI CHÚ:\n";
+    text += notes.value;
+
+    const blob = new Blob([text], {type:'text/plain'});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'bao-cao-kiem-tra-nha.txt';
+    link.click();
+}
+
+function resetChecklist() {
+    if(confirm("Xóa toàn bộ dữ liệu?")) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+
+checks.forEach(c => c.addEventListener('change', updateProgress));
+notes.addEventListener('input', saveData);
+
+loadData();
+</script>
+
+</body>
+</html>
