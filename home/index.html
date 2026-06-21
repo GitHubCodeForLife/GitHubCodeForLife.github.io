@@ -4,231 +4,964 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checklist Kiểm Tra Nhà Trước Khi Mua</title>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary: #2563eb;
+        --primary-light: #dbeafe;
+        --success: #16a34a;
+        --success-light: #dcfce7;
+        --danger: #dc2626;
+        --danger-light: #fee2e2;
+        --warning: #f59e0b;
+        --bg: #f0f4f8;
+        --card: #ffffff;
+        --text: #1e293b;
+        --text-secondary: #64748b;
+        --border: #e2e8f0;
+        --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+        --radius: 12px;
+    }
+
     body {
-        font-family: Arial, sans-serif;
-        max-width: 1000px;
-        margin: 20px auto;
-        padding: 20px;
-        background: #f5f7fa;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 24px 16px 80px;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
     }
 
-    h1 {
+    /* Header */
+    .header {
         text-align: center;
-        color: #2c3e50;
+        margin-bottom: 28px;
     }
 
-    .section {
-        background: white;
-        padding: 15px;
-        margin: 15px 0;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    .header h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0 0 6px;
     }
 
-    h2 {
-        color: #3498db;
-        margin-top: 0;
-    }
-
-    label {
-        display: block;
-        margin: 8px 0;
-        cursor: pointer;
-    }
-
-    .progress-container {
-        background: #ddd;
-        border-radius: 20px;
-        overflow: hidden;
-        margin-bottom: 20px;
-    }
-
-    .progress-bar {
-        height: 25px;
-        width: 0%;
-        background: #27ae60;
-        color: white;
-        text-align: center;
-        line-height: 25px;
-        transition: 0.3s;
-    }
-
-    textarea {
-        width: 100%;
-        min-height: 120px;
-        padding: 10px;
-        margin-top: 10px;
-    }
-
-    button {
-        padding: 12px 18px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        margin-top: 10px;
-        margin-right: 10px;
+    .header p {
+        color: var(--text-secondary);
         font-size: 15px;
+        margin: 0;
     }
 
-    .export-btn {
-        background: #3498db;
+    /* Sticky progress */
+    .progress-wrapper {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--card);
+        padding: 14px 20px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-md);
+        margin-bottom: 24px;
+    }
+
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .progress-info .label {
+        color: var(--text-secondary);
+    }
+
+    .progress-info .count {
+        color: var(--primary);
+    }
+
+    .progress-track {
+        height: 10px;
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--primary), var(--success));
+        border-radius: 99px;
+        transition: width 0.4s ease;
+    }
+
+    /* Section */
+    .section {
+        background: var(--card);
+        padding: 20px 24px;
+        margin-bottom: 16px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        transition: box-shadow 0.2s;
+    }
+
+    .section:hover {
+        box-shadow: var(--shadow-md);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+    }
+
+    .section-header h2 {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .section-header h2 .icon {
+        font-size: 20px;
+    }
+
+    .section-badge {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 99px;
+        background: var(--border);
+        color: var(--text-secondary);
+        transition: all 0.3s;
+    }
+
+    .section-badge.complete {
+        background: var(--success-light);
+        color: var(--success);
+    }
+
+    /* Custom checkboxes */
+    .check-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        margin: 4px -12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+        user-select: none;
+    }
+
+    .check-item:hover {
+        background: var(--primary-light);
+    }
+
+    .check-item input[type="checkbox"] {
+        display: none;
+    }
+
+    .check-item .checkmark {
+        width: 22px;
+        height: 22px;
+        border: 2px solid var(--border);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.2s;
+    }
+
+    .check-item .checkmark svg {
+        width: 14px;
+        height: 14px;
+        opacity: 0;
+        transform: scale(0.5);
+        transition: all 0.2s;
+    }
+
+    .check-item input:checked ~ .checkmark {
+        background: var(--success);
+        border-color: var(--success);
+    }
+
+    .check-item input:checked ~ .checkmark svg {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .check-item .item-text {
+        font-size: 15px;
+        color: var(--text);
+        transition: all 0.2s;
+    }
+
+    .check-item input:checked ~ .item-text {
+        color: var(--text-secondary);
+        text-decoration: line-through;
+    }
+
+    /* Form inputs */
+    .form-group {
+        margin-bottom: 14px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        color: var(--text);
+        background: var(--card);
+        transition: border-color 0.2s, box-shadow 0.2s;
+        outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    /* Buttons */
+    .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+        margin-bottom: 16px;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 22px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+
+    .btn:active {
+        transform: scale(0.97);
+    }
+
+    .btn-primary {
+        background: var(--primary);
         color: white;
     }
 
-    .reset-btn {
-        background: #e74c3c;
+    .btn-primary:hover {
+        background: #1d4ed8;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-success {
+        background: var(--success);
         color: white;
+    }
+
+    .btn-success:hover {
+        background: #15803d;
+        box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+    }
+
+    .btn-danger {
+        background: var(--danger-light);
+        color: var(--danger);
+    }
+
+    .btn-danger:hover {
+        background: #fecaca;
+    }
+
+    /* Toast notification */
+    .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background: var(--text);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 999;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* Image upload */
+    .upload-zone {
+        border: 2px dashed var(--border);
+        border-radius: 10px;
+        padding: 32px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+    }
+
+    .upload-zone:hover,
+    .upload-zone.dragover {
+        border-color: var(--primary);
+        background: var(--primary-light);
+    }
+
+    .upload-zone .upload-icon {
+        font-size: 36px;
+        margin-bottom: 8px;
+    }
+
+    .upload-zone .upload-text {
+        font-size: 15px;
+        color: var(--text-secondary);
+        margin-bottom: 4px;
+    }
+
+    .upload-zone .upload-hint {
+        font-size: 12px;
+        color: var(--border);
+    }
+
+    .upload-zone input[type="file"] {
+        display: none;
+    }
+
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+        margin-top: 14px;
+    }
+
+    .image-thumb {
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+    }
+
+    .image-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .image-thumb .remove-btn {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .image-thumb:hover .remove-btn {
+        opacity: 1;
+    }
+
+    .image-count {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        body {
+            padding: 16px 12px 80px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            justify-content: center;
+        }
+
+        .section {
+            padding: 16px;
+        }
     }
 </style>
 </head>
 <body>
 
-<h1>🏠 Checklist Mua Nhà</h1>
-
-<div class="progress-container">
-    <div class="progress-bar" id="progressBar">0%</div>
+<div class="header">
+    <h1>🏠 Checklist Mua Nhà</h1>
+    <p>Kiểm tra kỹ lưỡng trước khi quyết định mua</p>
 </div>
 
+<!-- Sticky progress -->
+<div class="progress-wrapper">
+    <div class="progress-info">
+        <span class="label">Tiến độ kiểm tra</span>
+        <span class="count" id="progressCount">0 / 31</span>
+    </div>
+    <div class="progress-track">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+</div>
+
+<!-- House info -->
 <div class="section">
-    <h2>1. Pháp lý</h2>
-    <label><input type="checkbox" class="check"> Có sổ hồng/sổ đỏ hợp lệ</label>
-    <label><input type="checkbox" class="check"> Chủ sở hữu đúng người bán</label>
-    <label><input type="checkbox" class="check"> Không tranh chấp</label>
-    <label><input type="checkbox" class="check"> Không thế chấp</label>
-    <label><input type="checkbox" class="check"> Không nằm trong quy hoạch bất lợi</label>
+    <div class="section-header">
+        <h2><span class="icon">📋</span> Thông tin căn nhà</h2>
+    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label>Tên căn nhà</label>
+            <input type="text" id="houseName" placeholder="VD: Nhà Quận 7">
+        </div>
+        <div class="form-group">
+            <label>Giá bán</label>
+            <input type="text" id="price" placeholder="VD: 3.5 tỷ">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Địa chỉ</label>
+        <input type="text" id="address" placeholder="Địa chỉ cụ thể">
+    </div>
+    <div class="form-group">
+        <label>Diện tích</label>
+        <input type="text" id="area" placeholder="VD: 80m²">
+    </div>
 </div>
 
+<!-- Sections -->
+<div class="section" data-section="1">
+    <div class="section-header">
+        <h2><span class="icon">⚖️</span> 1. Pháp lý</h2>
+        <span class="section-badge">0/5</span>
+    </div>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Có sổ hồng/sổ đỏ hợp lệ</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Chủ sở hữu đúng người bán</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không tranh chấp</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không thế chấp</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không nằm trong quy hoạch bất lợi</span></label>
+</div>
+
+<div class="section" data-section="2">
+    <div class="section-header">
+        <h2><span class="icon">📍</span> 2. Vị trí & Môi trường</h2>
+        <span class="section-badge">0/5</span>
+    </div>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Gần nơi làm việc</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Gần trường học/chợ/bệnh viện</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không ngập nước</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Giao thông thuận tiện</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Khu vực an ninh tốt</span></label>
+</div>
+
+<div class="section" data-section="3">
+    <div class="section-header">
+        <h2><span class="icon">☀️</span> 3. Hướng nhà & Ánh sáng</h2>
+        <span class="section-badge">0/3</span>
+    </div>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Thông thoáng</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Đủ ánh sáng tự nhiên</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không bị che chắn quá nhiều</span></label>
+</div>
+
+<div class="section" data-section="4">
+    <div class="section-header">
+        <h2><span class="icon">🏗️</span> 4. Kết cấu công trình</h2>
+        <span class="section-badge">0/5</span>
+    </div>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không nứt tường lớn</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không dột mái</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không lún nền</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Cửa hoạt động tốt</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Cầu thang chắc chắn</span></label>
+</div>
+
+<div class="section" data-section="5">
+    <div class="section-header">
+        <h2><span class="icon">⚡</span> 5. Điện & Nước</h2>
+        <span class="section-badge">0/3</span>
+    </div>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Áp lực nước tốt</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không rò rỉ nước</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Hệ thống điện an toàn</span></label>
+</div>
+
+<div class="section" data-section="6">
+    <div class="section-header">
+        <h2><span class="icon">🐛</span> 6. Thấm dột & Côn trùng</h2>
+        <span class="section-badge">0/3</span>
+    </div>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không ẩm mốc</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không thấm tường</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Không mối mọt</span></label>
+</div>
+
+<div class="section" data-section="7">
+    <div class="section-header">
+        <h2><span class="icon">🛣️</span> 7. Hạ tầng</h2>
+        <span class="section-badge">0/4</span>
+    </div>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Đường rộng</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Ô tô vào được</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Thoát nước tốt</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Internet ổn định</span></label>
+</div>
+
+<div class="section" data-section="8">
+    <div class="section-header">
+        <h2><span class="icon">💰</span> 8. Chi phí</h2>
+        <span class="section-badge">0/3</span>
+    </div>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Thuế phí rõ ràng</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Chi phí sửa chữa hợp lý</span></label>
+    <label class="check-item"><input type="checkbox" class="check"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="item-text">Giá phù hợp khu vực</span></label>
+</div>
+
+<!-- Notes -->
 <div class="section">
-    <h2>2. Vị trí & Môi trường</h2>
-    <label><input type="checkbox" class="check"> Gần nơi làm việc</label>
-    <label><input type="checkbox" class="check"> Gần trường học/chợ/bệnh viện</label>
-    <label><input type="checkbox" class="check"> Không ngập nước</label>
-    <label><input type="checkbox" class="check"> Giao thông thuận tiện</label>
-    <label><input type="checkbox" class="check"> Khu vực an ninh tốt</label>
+    <div class="section-header">
+        <h2><span class="icon">📝</span> Ghi chú</h2>
+    </div>
+    <div class="form-group">
+        <textarea id="notes" placeholder="Ghi chú khi đi xem nhà..."></textarea>
+    </div>
 </div>
 
+<!-- Images -->
 <div class="section">
-    <h2>3. Hướng nhà & Ánh sáng</h2>
-    <label><input type="checkbox" class="check"> Thông thoáng</label>
-    <label><input type="checkbox" class="check"> Đủ ánh sáng tự nhiên</label>
-    <label><input type="checkbox" class="check"> Không bị che chắn quá nhiều</label>
+    <div class="section-header">
+        <h2><span class="icon">📷</span> Hình ảnh</h2>
+    </div>
+    <div class="upload-zone" id="uploadZone">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">Kéo thả ảnh vào đây hoặc nhấn để chọn</div>
+        <div class="upload-hint">Hỗ trợ JPG, PNG, WEBP — tối đa 5 ảnh</div>
+        <input type="file" id="imageInput" accept="image/*" multiple>
+    </div>
+    <div class="image-grid" id="imageGrid"></div>
+    <div class="image-count" id="imageCount"></div>
 </div>
 
-<div class="section">
-    <h2>4. Kết cấu công trình</h2>
-    <label><input type="checkbox" class="check"> Không nứt tường lớn</label>
-    <label><input type="checkbox" class="check"> Không dột mái</label>
-    <label><input type="checkbox" class="check"> Không lún nền</label>
-    <label><input type="checkbox" class="check"> Cửa hoạt động tốt</label>
-    <label><input type="checkbox" class="check"> Cầu thang chắc chắn</label>
+<!-- Action buttons -->
+<div class="actions">
+    <button class="btn btn-primary" onclick="exportChecklist()">
+        📄 Xuất báo cáo
+    </button>
+    <button class="btn btn-success" onclick="generatePDF()">
+        📑 Xuất PDF
+    </button>
+    <button class="btn btn-danger" onclick="resetChecklist()">
+        🗑️ Xóa dữ liệu
+    </button>
 </div>
 
-<div class="section">
-    <h2>5. Điện & Nước</h2>
-    <label><input type="checkbox" class="check"> Áp lực nước tốt</label>
-    <label><input type="checkbox" class="check"> Không rò rỉ nước</label>
-    <label><input type="checkbox" class="check"> Hệ thống điện an toàn</label>
-</div>
-
-<div class="section">
-    <h2>6. Thấm dột & Côn trùng</h2>
-    <label><input type="checkbox" class="check"> Không ẩm mốc</label>
-    <label><input type="checkbox" class="check"> Không thấm tường</label>
-    <label><input type="checkbox" class="check"> Không mối mọt</label>
-</div>
-
-<div class="section">
-    <h2>7. Hạ tầng</h2>
-    <label><input type="checkbox" class="check"> Đường rộng</label>
-    <label><input type="checkbox" class="check"> Ô tô vào được</label>
-    <label><input type="checkbox" class="check"> Thoát nước tốt</label>
-    <label><input type="checkbox" class="check"> Internet ổn định</label>
-</div>
-
-<div class="section">
-    <h2>8. Chi phí</h2>
-    <label><input type="checkbox" class="check"> Thuế phí rõ ràng</label>
-    <label><input type="checkbox" class="check"> Chi phí sửa chữa hợp lý</label>
-    <label><input type="checkbox" class="check"> Giá phù hợp khu vực</label>
-</div>
-
-<div class="section">
-    <h2>📝 Ghi chú</h2>
-    <textarea id="notes" placeholder="Ghi chú khi đi xem nhà..."></textarea>
-</div>
-
-<button class="export-btn" onclick="exportChecklist()">
-Xuất báo cáo
-</button>
-
-<button class="reset-btn" onclick="resetChecklist()">
-Xóa dữ liệu
-</button>
+<div class="toast" id="toast"></div>
 
 <script>
 const checks = document.querySelectorAll('.check');
-const notes = document.getElementById('notes');
+const notesEl = document.getElementById('notes');
+const houseFields = ['houseName', 'address', 'price', 'area'];
+const MAX_IMAGES = 5;
+let uploadedImages = [];
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+}
 
 function updateProgress() {
     const total = checks.length;
     const checked = [...checks].filter(c => c.checked).length;
     const percent = Math.round((checked / total) * 100);
 
-    const bar = document.getElementById('progressBar');
-    bar.style.width = percent + '%';
-    bar.textContent = percent + '%';
+    document.getElementById('progressBar').style.width = percent + '%';
+    document.getElementById('progressCount').textContent = `${checked} / ${total}`;
 
+    updateSectionBadges();
     saveData();
+}
+
+function updateSectionBadges() {
+    document.querySelectorAll('.section[data-section]').forEach(section => {
+        const items = section.querySelectorAll('.check');
+        const checked = [...items].filter(c => c.checked).length;
+        const badge = section.querySelector('.section-badge');
+        if (badge) {
+            badge.textContent = `${checked}/${items.length}`;
+            badge.classList.toggle('complete', checked === items.length);
+        }
+    });
 }
 
 function saveData() {
     const data = [...checks].map(c => c.checked);
     localStorage.setItem('houseChecklist', JSON.stringify(data));
-    localStorage.setItem('houseNotes', notes.value);
+    localStorage.setItem('houseNotes', notesEl.value);
+
+    const houseInfo = {};
+    houseFields.forEach(id => {
+        houseInfo[id] = document.getElementById(id).value;
+    });
+    localStorage.setItem('houseInfo', JSON.stringify(houseInfo));
+
+    try {
+        localStorage.setItem('houseImages', JSON.stringify(uploadedImages));
+    } catch (e) {
+        // localStorage quota exceeded — images too large
+        console.warn('Could not save images to localStorage');
+    }
 }
 
 function loadData() {
     const data = JSON.parse(localStorage.getItem('houseChecklist'));
     if (data) {
-        checks.forEach((c, i) => c.checked = data[i]);
+        checks.forEach((c, i) => c.checked = data[i] || false);
     }
 
-    notes.value = localStorage.getItem('houseNotes') || '';
+    notesEl.value = localStorage.getItem('houseNotes') || '';
+
+    const houseInfo = JSON.parse(localStorage.getItem('houseInfo'));
+    if (houseInfo) {
+        houseFields.forEach(id => {
+            if (houseInfo[id]) {
+                document.getElementById(id).value = houseInfo[id];
+            }
+        });
+    }
+
+    uploadedImages = JSON.parse(localStorage.getItem('houseImages')) || [];
+    renderImages();
+
     updateProgress();
 }
 
 function exportChecklist() {
-    let text = "BÁO CÁO KIỂM TRA NHÀ\n\n";
+    let text = "=== BAO CAO KIEM TRA NHA ===\n\n";
 
-    checks.forEach((c, index) => {
-        const label = c.parentElement.innerText;
-        text += `${c.checked ? "✔" : "✘"} ${label}\n`;
+    const houseName = document.getElementById('houseName').value;
+    const address = document.getElementById('address').value;
+    const price = document.getElementById('price').value;
+    const area = document.getElementById('area').value;
+
+    if (houseName) text += `Ten nha: ${houseName}\n`;
+    if (address) text += `Dia chi: ${address}\n`;
+    if (price) text += `Gia: ${price}\n`;
+    if (area) text += `Dien tich: ${area}\n`;
+    text += '\n--- KET QUA CHECKLIST ---\n\n';
+
+    checks.forEach(c => {
+        const label = c.closest('.check-item').querySelector('.item-text').textContent;
+        text += `${c.checked ? '[x]' : '[ ]'} ${label}\n`;
     });
 
-    text += "\nGHI CHÚ:\n";
-    text += notes.value;
+    const checked = [...checks].filter(c => c.checked).length;
+    const score = Math.round((checked / checks.length) * 100);
+    text += `\nTong diem: ${score}/100\n`;
 
-    const blob = new Blob([text], {type:'text/plain'});
+    text += "\n--- GHI CHU ---\n";
+    text += notesEl.value;
+
+    if (uploadedImages.length > 0) {
+        text += `\n\nHINH ANH: ${uploadedImages.length} anh da chup`;
+    }
+
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = 'bao-cao-kiem-tra-nha.txt';
     link.click();
+    URL.revokeObjectURL(link.href);
+
+    showToast('Da xuat bao cao thanh cong!');
+}
+
+async function generatePDF() {
+    const houseName = document.getElementById('houseName').value;
+    showToast('Dang tao PDF...');
+
+    // Build a temporary print-friendly container
+    const printEl = document.createElement('div');
+    printEl.style.cssText = 'position:fixed;left:-9999px;top:0;width:780px;padding:40px;background:#fff;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#1e293b;';
+
+    const checked = [...checks].filter(c => c.checked).length;
+    const total = checks.length;
+    const score = Math.round(checked / total * 100);
+    const notesVal = document.getElementById('notes').value;
+
+    let html = `
+        <h1 style="font-size:24px;color:#2563eb;margin:0 0 4px">BAO CAO DANH GIA NHA</h1>
+        <p style="color:#64748b;font-size:13px;margin:0 0 20px">Ngay tao: ${new Date().toLocaleDateString('vi-VN')}</p>
+    `;
+
+    const address = document.getElementById('address').value;
+    const price = document.getElementById('price').value;
+    const area = document.getElementById('area').value;
+
+    if (houseName || address || price || area) {
+        html += '<div style="background:#f0f4f8;border-radius:8px;padding:16px;margin-bottom:20px;">';
+        if (houseName) html += `<div style="margin-bottom:6px"><strong>Ten nha:</strong> ${houseName}</div>`;
+        if (address) html += `<div style="margin-bottom:6px"><strong>Dia chi:</strong> ${address}</div>`;
+        if (price) html += `<div style="margin-bottom:6px"><strong>Gia ban:</strong> ${price}</div>`;
+        if (area) html += `<div><strong>Dien tich:</strong> ${area}</div>`;
+        html += '</div>';
+    }
+
+    html += '<h2 style="font-size:16px;color:#2563eb;margin:0 0 12px">KET QUA CHECKLIST</h2>';
+    html += '<table style="width:100%;border-collapse:collapse;font-size:14px;">';
+
+    checks.forEach(c => {
+        const label = c.closest('.check-item').querySelector('.item-text').textContent;
+        const isChecked = c.checked;
+        const color = isChecked ? '#16a34a' : '#64748b';
+        const icon = isChecked ? '\u2713' : '\u2717';
+        html += `<tr style="border-bottom:1px solid #e2e8f0">
+            <td style="padding:8px 12px 8px 0;width:24px;color:${color};font-weight:bold">${icon}</td>
+            <td style="padding:8px 0;color:${color};${isChecked ? 'text-decoration:line-through' : ''}">${label}</td>
+        </tr>`;
+    });
+
+    html += '</table>';
+
+    const scoreColor = score >= 70 ? '#16a34a' : score >= 40 ? '#f59e0b' : '#dc2626';
+    html += `<div style="margin-top:20px;padding:14px 18px;background:${score >= 70 ? '#dcfce7' : score >= 40 ? '#fef3c7' : '#fee2e2'};border-radius:8px;font-size:18px;font-weight:700;color:${scoreColor}">
+        Tong diem: ${score}/100 (${checked}/${total})
+    </div>`;
+
+    if (notesVal.trim()) {
+        html += `<div style="margin-top:20px"><h3 style="font-size:14px;margin:0 0 8px">Ghi chu:</h3>
+            <div style="background:#f8fafc;padding:12px;border-radius:6px;font-size:13px;white-space:pre-wrap">${notesVal.replace(/</g,'&lt;')}</div></div>`;
+    }
+
+    if (uploadedImages.length > 0) {
+        html += '<div style="margin-top:20px"><h3 style="font-size:14px;margin:0 0 12px">Hinh anh:</h3>';
+        html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">';
+        uploadedImages.forEach((src, i) => {
+            html += `<img src="${src}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0" alt="Ảnh ${i+1}">`;
+        });
+        html += '</div></div>';
+    }
+
+    printEl.innerHTML = html;
+    document.body.appendChild(printEl);
+
+    try {
+        const canvas = await html2canvas(printEl, { scale: 2, useCORS: true });
+        const imgData = canvas.toDataURL('image/png');
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const margin = 10;
+        const imgWidth = pageWidth - margin * 2;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        let heightLeft = imgHeight;
+        let position = margin;
+
+        doc.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+        heightLeft -= (pageHeight - margin * 2);
+
+        while (heightLeft > 0) {
+            position = heightLeft - imgHeight + margin;
+            doc.addPage();
+            doc.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+            heightLeft -= (pageHeight - margin * 2);
+        }
+
+        doc.save(`${houseName || 'bao-cao-nha'}.pdf`);
+        showToast('Da xuat PDF thanh cong!');
+    } catch (err) {
+        console.error('PDF error:', err);
+        showToast('Loi khi tao PDF. Vui long thu lai.');
+    } finally {
+        document.body.removeChild(printEl);
+    }
 }
 
 function resetChecklist() {
-    if(confirm("Xóa toàn bộ dữ liệu?")) {
-        localStorage.clear();
+    if (confirm('Xoa toan bo du lieu? Hanh dong nay khong the hoan tac.')) {
+        localStorage.removeItem('houseChecklist');
+        localStorage.removeItem('houseNotes');
+        localStorage.removeItem('houseInfo');
+        localStorage.removeItem('houseImages');
         location.reload();
     }
 }
 
-checks.forEach(c => c.addEventListener('change', updateProgress));
-notes.addEventListener('input', saveData);
+// Image upload handling
+const uploadZone = document.getElementById('uploadZone');
+const imageInput = document.getElementById('imageInput');
+const imageGrid = document.getElementById('imageGrid');
+const imageCount = document.getElementById('imageCount');
 
+uploadZone.addEventListener('click', () => imageInput.click());
+
+uploadZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadZone.classList.add('dragover');
+});
+
+uploadZone.addEventListener('dragleave', () => {
+    uploadZone.classList.remove('dragover');
+});
+
+uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    handleFiles(e.dataTransfer.files);
+});
+
+imageInput.addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+    imageInput.value = '';
+});
+
+function handleFiles(files) {
+    const remaining = MAX_IMAGES - uploadedImages.length;
+    if (remaining <= 0) {
+        showToast(`Toi da ${MAX_IMAGES} anh. Xoa bot de them moi.`);
+        return;
+    }
+
+    const filesToProcess = Array.from(files).slice(0, remaining);
+    let processed = 0;
+
+    filesToProcess.forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            // Resize image to save localStorage space
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const maxSize = 800;
+                let w = img.width, h = img.height;
+                if (w > maxSize || h > maxSize) {
+                    if (w > h) { h = (h / w) * maxSize; w = maxSize; }
+                    else { w = (w / h) * maxSize; h = maxSize; }
+                }
+                canvas.width = w;
+                canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                uploadedImages.push(canvas.toDataURL('image/jpeg', 0.7));
+                processed++;
+                if (processed === filesToProcess.length) {
+                    renderImages();
+                    saveData();
+                    showToast(`Da them ${processed} anh`);
+                }
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function renderImages() {
+    imageGrid.innerHTML = '';
+    uploadedImages.forEach((src, idx) => {
+        const thumb = document.createElement('div');
+        thumb.className = 'image-thumb';
+        thumb.innerHTML = `
+            <img src="${src}" alt="Ảnh ${idx + 1}">
+            <button class="remove-btn" onclick="removeImage(${idx})" title="Xóa ảnh">&times;</button>
+        `;
+        imageGrid.appendChild(thumb);
+    });
+    imageCount.textContent = uploadedImages.length > 0
+        ? `${uploadedImages.length}/${MAX_IMAGES} ảnh`
+        : '';
+}
+
+function removeImage(idx) {
+    uploadedImages.splice(idx, 1);
+    renderImages();
+    saveData();
+    showToast('Da xoa anh');
+}
+
+// Event listeners
+checks.forEach(c => c.addEventListener('change', updateProgress));
+notesEl.addEventListener('input', saveData);
+houseFields.forEach(id => {
+    document.getElementById(id).addEventListener('input', saveData);
+});
+
+// Initialize
 loadData();
 </script>
-
 </body>
 </html>
